@@ -1,0 +1,10 @@
+{
+  "name": "Trading Futures",
+  "github_url": "https://github.com/alsk1992/CloddsBot",
+  "category": [
+    "binance",
+    "cex",
+    "trading"
+  ],
+  "description": "Futures trading on Binance, Bybit, Hyperliquid, and MEXC \u2014 position management and risk"
+}
