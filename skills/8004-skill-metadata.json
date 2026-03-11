@@ -1,0 +1,9 @@
+{
+  "name": "8004 Skill",
+  "github_url": "https://github.com/tronprotocol/tronweb",
+  "category": [
+    "defi",
+    "dex"
+  ],
+  "description": "Register and manage AI agent identities via ERC-8004 on TRON and BSC"
+}
