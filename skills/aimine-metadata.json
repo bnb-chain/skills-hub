@@ -1,0 +1,8 @@
+{
+  "name": "AIMine",
+  "github_url": "https://github.com/AIMineRes/PoAIW",
+  "category": [
+    "bnb-chain"
+  ],
+  "description": "Mine AIT (Proof of AI Work) on BNB Chain entirely from OpenClaw"
+}
