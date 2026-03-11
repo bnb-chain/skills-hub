@@ -1,0 +1,9 @@
+{
+  "name": "CCXT Adapter",
+  "github_url": "https://github.com/WayfinderFoundation/wayfinder-paths-sdk",
+  "category": [
+    "cross-chain",
+    "infrastructure"
+  ],
+  "description": "CCXT adapter for unified access to all major crypto exchanges including Binance"
+}
