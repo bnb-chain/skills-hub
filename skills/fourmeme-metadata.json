@@ -1,0 +1,9 @@
+{
+  "name": "FourMeme",
+  "github_url": "https://github.com/four-meme-community/four-meme-ai",
+  "category": [
+    "defi",
+    "dex"
+  ],
+  "description": "CLI tool to create and trade meme tokens on four.meme (BSC only)"
+}
