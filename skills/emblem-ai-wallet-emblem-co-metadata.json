@@ -1,0 +1,9 @@
+{
+  "name": "Emblem AI Wallet (Emblem Co.)",
+  "github_url": "https://github.com/EmblemCompany/EmblemAi-AgentWallet",
+  "category": [
+    "cross-chain",
+    "infrastructure"
+  ],
+  "description": "Emblem Company variant of the AI agent wallet with BSC support"
+}
