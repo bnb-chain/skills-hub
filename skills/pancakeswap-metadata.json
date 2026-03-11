@@ -1,0 +1,9 @@
+{
+  "name": "PancakeSwap",
+  "github_url": "https://github.com/alsk1992/CloddsBot",
+  "category": [
+    "defi",
+    "dex"
+  ],
+  "description": "PancakeSwap \u2014 Multi-chain DEX (BNB Chain, ETH, ARB, Base)"
+}
