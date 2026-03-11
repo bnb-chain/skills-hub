@@ -1,0 +1,9 @@
+{
+  "name": "agos-marketplace",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "defi",
+    "dex"
+  ],
+  "description": "Integrate with Agos Marketplace; prepare BNB Chain payment params and track status"
+}
