@@ -1,0 +1,8 @@
+{
+  "name": "Bnbchain MCP",
+  "github_url": "https://github.com/bnb-chain/bnbchain-mcp",
+  "category": [
+    "bnb-chain"
+  ],
+  "description": "MCP server for BNB Chain blocks, tokens, NFTs; Greenfield and ERC-8004"
+}
