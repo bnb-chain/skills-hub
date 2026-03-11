@@ -1,0 +1,9 @@
+{
+  "name": "x402-wach",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "cross-chain",
+    "infrastructure"
+  ],
+  "description": "DeFi risk analysis toolkit for tokens on Ethereum, Polygon, Base, BSC and more"
+}
