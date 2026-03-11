@@ -1,0 +1,10 @@
+{
+  "name": "Kimchi Premium",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "binance",
+    "cex",
+    "trading"
+  ],
+  "description": "Kimchi premium arbitrage detector between Korean and global exchanges (Binance/Upbit)"
+}
