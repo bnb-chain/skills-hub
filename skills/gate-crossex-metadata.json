@@ -1,0 +1,9 @@
+{
+  "name": "Gate-CrossEX",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "cross-chain",
+    "infrastructure"
+  ],
+  "description": "Unified trading interface for Binance, OKX, and Gate.io"
+}
