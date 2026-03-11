@@ -1,0 +1,9 @@
+{
+  "name": "Rho Portfolio Tracker",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "cross-chain",
+    "infrastructure"
+  ],
+  "description": "Track portfolios across Binance, Hyperliquid, and Polymarket"
+}
