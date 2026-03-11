@@ -1,6 +1,24 @@
 {
   "name": "bnbchain skills",
   "github_url": "https://github.com/bnb-chain/bnbchain-skills",
-  "category": ["infrastructure", "blockchain"],
-  "description": "A skill for building on BNB Chain - covers EVM interactions, smart contracts, tokens, NFTs, wallet operations, ERC-8004 agent tools, and Greenfield storage. Use it when developing or querying BNB Smart Chain and opBNB infrastructure via the BNB Chain MCP."             
+  "category": [
+    "infrastructure",
+    "blockchain"
+  ],
+  "description": "A skill for building on BNB Chain - covers EVM interactions, smart contracts, tokens, NFTs, wallet operations, ERC-8004 agent tools, and Greenfield storage. Use it when developing or querying BNB Smart Chain and opBNB infrastructure via the BNB Chain MCP.",
+  "owner": {
+    "username": "bnb-chain",
+    "display_name": "bnb-chain",
+    "type": "Organization",
+    "profile_url": "https://github.com/bnb-chain",
+    "avatar_url": "https://avatars.githubusercontent.com/u/45615063?v=4"
+  },
+  "repo": {
+    "stars": 54,
+    "default_branch": "main"
+  },
+  "latest_commit": "4f6557b7f776c2ac6748027baadf18d44db67da7",
+  "agentguard_scan_id": null,
+  "agentguard_report_url": null,
+  "evaluated_at": "2026-03-11T16:21:17.539Z"
 }
