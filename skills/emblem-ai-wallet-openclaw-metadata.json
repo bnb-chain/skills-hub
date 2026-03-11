@@ -1,0 +1,9 @@
+{
+  "name": "Emblem AI Wallet (openclaw)",
+  "github_url": "https://github.com/EmblemCompany/EmblemAi-AgentWallet",
+  "category": [
+    "cross-chain",
+    "infrastructure"
+  ],
+  "description": "Emblem AI agent wallet supporting BSC/BNB Chain multi-chain wallet operations"
+}
