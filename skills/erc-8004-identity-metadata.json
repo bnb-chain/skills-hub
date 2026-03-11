@@ -1,0 +1,9 @@
+{
+  "name": "ERC-8004 Identity",
+  "github_url": "https://github.com/ava-labs/ERC-8004",
+  "category": [
+    "erc-8004",
+    "identity"
+  ],
+  "description": "Maintain agent on-chain identity (ERC-8004) on BNB Chain using the BNBAgent SDK"
+}
