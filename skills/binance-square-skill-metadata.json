@@ -1,0 +1,10 @@
+{
+  "name": "Binance Square Skill",
+  "github_url": "https://github.com/Phlegonlabs/bn-square-skill",
+  "category": [
+    "binance",
+    "cex",
+    "trading"
+  ],
+  "description": "Post to Binance Square from AI agents"
+}
