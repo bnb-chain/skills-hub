@@ -1,0 +1,8 @@
+{
+  "name": "Boiling Point",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "bnb-chain"
+  ],
+  "description": "Launchpad for onchain agents \u2014 launch and trade omnichain tokens across Base, SOL, BNB"
+}
