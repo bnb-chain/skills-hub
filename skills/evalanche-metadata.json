@@ -1,0 +1,9 @@
+{
+  "name": "Evalanche",
+  "github_url": "https://github.com/iJaack/evalanche",
+  "category": [
+    "cross-chain",
+    "infrastructure"
+  ],
+  "description": "Multi-EVM agent wallet SDK supporting 21+ chains including BSC/BNB"
+}
