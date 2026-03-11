@@ -1,0 +1,9 @@
+{
+  "name": "ERC-8004 Reputation",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "erc-8004",
+    "identity"
+  ],
+  "description": "On-chain reputation for AI agents \u2014 feedback and score checks. Supports Base and BNB"
+}
