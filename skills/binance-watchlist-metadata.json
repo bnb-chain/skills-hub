@@ -1,0 +1,10 @@
+{
+  "name": "Binance Watchlist",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "binance",
+    "cex",
+    "trading"
+  ],
+  "description": "Automated Binance watchlist scanner with multi-indicator TA scoring and price alerts"
+}
