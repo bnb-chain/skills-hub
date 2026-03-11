@@ -1,0 +1,8 @@
+{
+  "name": "YieldVault Agent",
+  "github_url": "https://github.com/open-web-academy/yieldvault-agent-bnb",
+  "category": [
+    "bnb-chain"
+  ],
+  "description": "Autonomous yield farming agent for BNB Chain with deterministic execution"
+}
