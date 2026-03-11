@@ -1,0 +1,8 @@
+{
+  "name": "opinion",
+  "github_url": "https://github.com/alsk1992/CloddsBot",
+  "category": [
+    "prediction-markets"
+  ],
+  "description": "Opinion.trade prediction market trading (BNB Chain CLOB)"
+}
