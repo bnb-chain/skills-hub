@@ -1,0 +1,8 @@
+{
+  "name": "ClawTrade-BNB OpenClaw",
+  "github_url": "https://github.com/open-web-academy/clawtrade-bnb",
+  "category": [
+    "bnb-chain"
+  ],
+  "description": "Autonomous DeFi trading with explainability, multi-agent UI, one-click execution"
+}
