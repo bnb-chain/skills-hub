@@ -1,0 +1,10 @@
+{
+  "name": "Binance (basic)",
+  "github_url": "https://github.com/majiayu000/claude-skill-registry",
+  "category": [
+    "binance",
+    "cex",
+    "trading"
+  ],
+  "description": "Binance trading and market data skill"
+}
