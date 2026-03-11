@@ -1,0 +1,9 @@
+{
+  "name": "ERC-8004 Register",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "erc-8004",
+    "identity"
+  ],
+  "description": "Register AI agents on-chain and update metadata via ERC-8004 Identity Registry on BNB Chain"
+}
