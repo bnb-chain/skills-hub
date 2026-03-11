@@ -1,0 +1,10 @@
+{
+  "name": "Binance-Hunter",
+  "github_url": "https://github.com/TetrAVAD/binance-hunter",
+  "category": [
+    "binance",
+    "cex",
+    "trading"
+  ],
+  "description": "AI market analysis, auto-risk calculation, 125x leverage"
+}
