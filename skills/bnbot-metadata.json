@@ -1,0 +1,8 @@
+{
+  "name": "BNBOT",
+  "github_url": "https://github.com/jackleeio/bnbot-mcp-server",
+  "category": [
+    "bnb-chain"
+  ],
+  "description": "Control Twitter/X via BNBOT Chrome Extension \u2014 scrape tweets, post, reply, analyze accounts"
+}
