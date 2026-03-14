@@ -1,0 +1,8 @@
+{
+  "name": "Clawtrade Bnb",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "bnb-chain"
+  ],
+  "description": "Autonomous DeFi trading agent for BNB Chain with multi-strategy engine"
+}
