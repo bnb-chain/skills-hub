@@ -1,0 +1,10 @@
+{
+  "name": "Binance Pro",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "binance",
+    "cex",
+    "trading"
+  ],
+  "description": "Complete Binance \u2014 spot & futures (125x leverage), staking, portfolio management"
+}
