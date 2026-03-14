@@ -1,0 +1,10 @@
+{
+  "name": "Crypto Arbitrage CN",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "binance",
+    "cex",
+    "trading"
+  ],
+  "description": "Cross-exchange arbitrage: Binance, OKX, Gate.io, Huobi"
+}
