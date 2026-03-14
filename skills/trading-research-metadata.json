@@ -1,0 +1,10 @@
+{
+  "name": "Trading Research",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "binance",
+    "cex",
+    "trading"
+  ],
+  "description": "Binance market data, TA, position sizing, whale activity research"
+}
