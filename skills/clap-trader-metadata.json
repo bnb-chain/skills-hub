@@ -1,0 +1,10 @@
+{
+  "name": "Clap Trader",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "binance",
+    "cex",
+    "trading"
+  ],
+  "description": "Researches crypto trends and trades on Binance via OpenClaw"
+}
