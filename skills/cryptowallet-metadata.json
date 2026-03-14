@@ -1,0 +1,9 @@
+{
+  "name": "CryptoWallet",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "cross-chain",
+    "infrastructure"
+  ],
+  "description": "Multi-chain wallet management for EVM (BSC, ETH, etc.) and Solana"
+}
