@@ -1,0 +1,9 @@
+{
+  "name": "PayTheFlyPro",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "cross-chain",
+    "infrastructure"
+  ],
+  "description": "Payment gateway links for BSC, Ethereum, and TRON applications"
+}
