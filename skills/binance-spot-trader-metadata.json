@@ -1,0 +1,10 @@
+{
+  "name": "Binance Spot Trader",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "binance",
+    "cex",
+    "trading"
+  ],
+  "description": "Autonomous trading bot with LLM-powered analysis; momentum, mean reversion, DCA"
+}
