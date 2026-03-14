@@ -1,0 +1,10 @@
+{
+  "name": "OpenClaw Binance",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "binance",
+    "cex",
+    "trading"
+  ],
+  "description": "Binance quant strategy monitoring, performance analysis, risk reporting"
+}
