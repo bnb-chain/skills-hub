@@ -1,0 +1,10 @@
+{
+  "name": "Binance DCA",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "binance",
+    "cex",
+    "trading"
+  ],
+  "description": "Professional DCA tool with scenario analysis, market/limit buys, testnet support"
+}
