@@ -1,0 +1,9 @@
+{
+  "name": "Onchain CLI",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "cross-chain",
+    "infrastructure"
+  ],
+  "description": "CLI for portfolio tracking: Binance/Coinbase holdings, wallet balances, and Polymarket"
+}
