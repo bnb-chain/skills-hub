@@ -1,0 +1,9 @@
+{
+  "name": "Bitagent Skill",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "cross-chain",
+    "infrastructure"
+  ],
+  "description": "Launch and trade agent tokens on BitAgent bonding curves on BSC"
+}
