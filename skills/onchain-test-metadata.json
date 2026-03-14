@@ -1,0 +1,9 @@
+{
+  "name": "Onchain Test",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "cross-chain",
+    "infrastructure"
+  ],
+  "description": "Test version \u2014 Binance holdings and wallet balance tracking"
+}
