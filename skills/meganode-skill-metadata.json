@@ -1,0 +1,9 @@
+{
+  "name": "Meganode Skill",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "defi",
+    "dex"
+  ],
+  "description": "NodeReal infrastructure APIs for BSC, opBNB, and 25+ other chains"
+}
