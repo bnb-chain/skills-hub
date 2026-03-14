@@ -1,0 +1,9 @@
+{
+  "name": "Test (CEX tracker)",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "cross-chain",
+    "infrastructure"
+  ],
+  "description": "Portfolio tracking and market data for CEX history (Binance/Coinbase)"
+}
