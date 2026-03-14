@@ -1,0 +1,10 @@
+{
+  "name": "Funding Rate Trader",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "binance",
+    "cex",
+    "trading"
+  ],
+  "description": "Arbitrage strategy for negative funding rates on Binance; auto-trading support"
+}
