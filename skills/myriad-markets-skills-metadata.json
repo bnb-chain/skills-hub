@@ -1,0 +1,6 @@
+{
+  "name": "Myriad Markets Skills",
+  "github_url": "https://github.com/MyriadProtocol/myriad-cli",
+  "category": ["Myriad Markets", "Prediction Markets"],
+  "description": "Use the Myriad CLI to trade prediction markets on Myriad Markets"
+}
