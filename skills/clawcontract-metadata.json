@@ -1,0 +1,9 @@
+{
+  "name": "clawcontract",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "defi",
+    "dex"
+  ],
+  "description": "AI-powered smart contract generator, analyzer, and deployer for BNB Chain (BSC/opBNB)"
+}
