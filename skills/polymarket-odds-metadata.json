@@ -1,0 +1,8 @@
+{
+  "name": "Polymarket Odds",
+  "github_url": "https://github.com/openclaw/skills",
+  "category": [
+    "prediction-markets"
+  ],
+  "description": "Query Polymarket via CLI \u2014 sports, politics, and crypto. No API key required"
+}
