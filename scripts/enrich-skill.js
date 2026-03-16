@@ -119,6 +119,13 @@ async function enrich(submissionFilePath) {
   console.log(`  Checking repo accessibility: ${githubUrl}`);
   const repoData = await githubGet(`https://api.github.com/repos/${owner}/${repo}`);
 
+  // Reject private repos — only public repos are valid for the skills registry.
+  // The GITHUB_TOKEN used in CI may have access to some private repos, so an
+  // explicit check is needed. The CONTRIBUTING.md states "Public repos only."
+  if (repoData.private) {
+    throw new Error('Only public repositories are allowed in the skills registry');
+  }
+
   // 3. Fetch owner profile (user or org)
   console.log(`  Fetching owner profile: ${owner}`);
   const ownerData = await githubGet(`https://api.github.com/users/${owner}`);
