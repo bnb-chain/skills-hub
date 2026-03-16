@@ -70,8 +70,12 @@ function parseOwnerRepo(githubUrl) {
  * Returns a concatenated string to pass to AgentGuard as `content`.
  */
 async function fetchRepoContent(owner, repo, defaultBranch) {
+  const safeOwner = encodeURIComponent(owner);
+  const safeRepo = encodeURIComponent(repo);
+  const safeBranch = encodeURIComponent(defaultBranch);
+
   const treeRes = await fetch(
-    `https://api.github.com/repos/${owner}/${repo}/git/trees/${defaultBranch}?recursive=1`,
+    `https://api.github.com/repos/${safeOwner}/${safeRepo}/git/trees/${safeBranch}?recursive=1`,
     { headers: githubHeaders() }
   );
 
@@ -91,7 +95,7 @@ async function fetchRepoContent(owner, repo, defaultBranch) {
   const contents = await Promise.all(
     candidates.map(async (f) => {
       const raw = await fetch(
-        `https://raw.githubusercontent.com/${owner}/${repo}/${defaultBranch}/${f.path}`
+        `https://raw.githubusercontent.com/${safeOwner}/${safeRepo}/${safeBranch}/${encodeURIComponent(f.path)}`
       );
       return raw.ok ? `### ${f.path}\n${await raw.text()}` : null;
     })
@@ -117,16 +121,20 @@ async function enrich(submissionFilePath) {
 
   // 2. Check URL accessibility + fetch repo metadata
   console.log(`  Checking repo accessibility: ${githubUrl}`);
-  const repoData = await githubGet(`https://api.github.com/repos/${owner}/${repo}`);
+  // Encode path segments to prevent URL injection via special characters
+  const safeOwner = encodeURIComponent(owner);
+  const safeRepo = encodeURIComponent(repo);
+
+  const repoData = await githubGet(`https://api.github.com/repos/${safeOwner}/${safeRepo}`);
 
   // 3. Fetch owner profile (user or org)
   console.log(`  Fetching owner profile: ${owner}`);
-  const ownerData = await githubGet(`https://api.github.com/users/${owner}`);
+  const ownerData = await githubGet(`https://api.github.com/users/${safeOwner}`);
 
   // 4. Fetch latest commit hash
   console.log(`  Fetching latest commit hash`);
   const commits = await githubGet(
-    `https://api.github.com/repos/${owner}/${repo}/commits?per_page=1`
+    `https://api.github.com/repos/${safeOwner}/${safeRepo}/commits?per_page=1`
   );
   const latestCommit = commits[0]?.sha ?? null;
 
