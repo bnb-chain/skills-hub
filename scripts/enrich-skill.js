@@ -50,10 +50,15 @@ function githubHeaders() {
   };
 }
 
+const DEFAULT_TIMEOUT_MS = 30000; // 30 seconds
+
 async function githubGet(url) {
-  const res = await fetch(url, { headers: githubHeaders() });
+  const res = await fetch(url, {
+    headers: githubHeaders(),
+    signal: AbortSignal.timeout(DEFAULT_TIMEOUT_MS),
+  });
   if (!res.ok) {
-    const body = await res.text();
+    const body = (await res.text()).slice(0, 500);
     throw new Error(`GitHub API error ${res.status} for ${url}: ${body}`);
   }
   return res.json();
@@ -72,7 +77,7 @@ function parseOwnerRepo(githubUrl) {
 async function fetchRepoContent(owner, repo, defaultBranch) {
   const treeRes = await fetch(
     `https://api.github.com/repos/${owner}/${repo}/git/trees/${defaultBranch}?recursive=1`,
-    { headers: githubHeaders() }
+    { headers: githubHeaders(), signal: AbortSignal.timeout(DEFAULT_TIMEOUT_MS) }
   );
 
   if (!treeRes.ok) return null;
@@ -91,7 +96,8 @@ async function fetchRepoContent(owner, repo, defaultBranch) {
   const contents = await Promise.all(
     candidates.map(async (f) => {
       const raw = await fetch(
-        `https://raw.githubusercontent.com/${owner}/${repo}/${defaultBranch}/${f.path}`
+        `https://raw.githubusercontent.com/${owner}/${repo}/${defaultBranch}/${f.path}`,
+        { signal: AbortSignal.timeout(DEFAULT_TIMEOUT_MS) }
       );
       return raw.ok ? `### ${f.path}\n${await raw.text()}` : null;
     })
@@ -155,6 +161,7 @@ async function enrich(submissionFilePath) {
             'X-API-Key': process.env.AGENTGUARD_API_KEY,
           },
           body: JSON.stringify({ content: skillContent }),
+          signal: AbortSignal.timeout(60000), // 60s for scan API
         });
 
         if (agRes.ok) {
