@@ -70,7 +70,7 @@ jobs:
       # -----------------------------------------------------------------------
       - name: Enrich skill metadata
         id: enrich
-        if: steps.changed.outputs.any == 'true'
+        if: steps.changed.outputs.any == 'true' && github.event.pull_request.head.repo.fork == false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AGENTGUARD_API_KEY: ${{ secrets.AGENTGUARD_API_KEY }}
