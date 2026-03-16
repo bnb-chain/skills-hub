@@ -28,6 +28,14 @@ jobs:
           # For push: checks out the pushed commit on main.
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
+          # SECURITY: Disable credential persistence to prevent token theft.
+          # By default, actions/checkout stores GITHUB_TOKEN in .git/config as:
+          #   [http "https://github.com/"]
+          #     extraheader = AUTHORIZATION: basic <base64(x-access-token:TOKEN)>
+          # A compromised or attacker-modified enrich-skill.js can read this file
+          # to extract the token, EVEN IF GITHUB_TOKEN is not passed as an env var.
+          # This completely bypasses any env-level token restriction.
+          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -86,9 +94,12 @@ jobs:
       # -----------------------------------------------------------------------
       - name: Commit enriched files to PR branch
         if: steps.changed.outputs.any == 'true' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git"
 
           # Switch to the actual PR branch so we can push
           git fetch origin ${{ github.event.pull_request.head.ref }}
@@ -109,9 +120,12 @@ jobs:
       # -----------------------------------------------------------------------
       - name: Commit enriched files to main
         if: steps.changed.outputs.any == 'true' && github.event_name == 'push'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git"
 
           while IFS= read -r file; do
             git add "$file"
