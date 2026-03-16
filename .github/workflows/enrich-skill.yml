@@ -72,7 +72,12 @@ jobs:
         id: enrich
         if: steps.changed.outputs.any == 'true'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # SECURITY: GITHUB_TOKEN is intentionally NOT passed to the enrichment
+          # script. The script only needs unauthenticated GitHub API access (with
+          # rate limits). Passing the token would allow a compromised or modified
+          # script to push to any branch (contents:write) or manipulate PRs
+          # (pull-requests:write), enabling persistent backdoor planting.
+          # If rate limits are hit, use a dedicated read-only PAT instead.
           AGENTGUARD_API_KEY: ${{ secrets.AGENTGUARD_API_KEY }}
         run: |
           while IFS= read -r file; do
