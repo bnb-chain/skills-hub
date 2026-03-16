@@ -144,7 +144,14 @@ async function enrich(submissionFilePath) {
     const skillContent = await fetchRepoContent(owner, repo, repoData.default_branch);
 
     if (!skillContent) {
-      console.warn('  ⚠ No scannable content found in repo — skipping AgentGuard');
+      console.warn('  No scannable content found in repo');
+      agentguardResult = {
+        risk_score: null,
+        risk_level: 'warning',
+        verdict:    'no_content',
+        summary:    'Repository contains no scannable files',
+        threats:    [],
+      };
     } else {
       console.log(`  Calling AgentGuard API`);
       try {
@@ -175,7 +182,14 @@ async function enrich(submissionFilePath) {
           console.warn(`  ⚠ AgentGuard returned ${agRes.status}: ${errBody} — skipping`);
         }
       } catch (err) {
-        console.warn(`  ⚠ AgentGuard call failed: ${err.message} — skipping`);
+        console.error(`  AgentGuard scan failed: ${err.message}`);
+        agentguardResult = {
+          risk_score: null,
+          risk_level: 'error',
+          verdict:    'scan_failed',
+          summary:    `Security scan failed: ${err.message.slice(0, 200)}`,
+          threats:    [],
+        };
       }
     }
   } else {
