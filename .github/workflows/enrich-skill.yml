@@ -68,9 +68,31 @@ jobs:
       # -----------------------------------------------------------------------
       # Run enrichment script — writes results back into each submission file.
       # -----------------------------------------------------------------------
+      # Verify that ONLY skill metadata files are changed in this PR.
+      # This is critical because scope-guard.yml runs as an INDEPENDENT workflow
+      # and cannot block this workflow. An attacker can modify both a skill file
+      # AND scripts/enrich-skill.js in the same PR — scope-guard will fail, but
+      # this workflow still executes the attacker's modified script with secrets.
+      - name: Inline scope verification
+        id: scope_check
+        if: steps.changed.outputs.any == 'true' && github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          ALL_CHANGED=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
+          UNSAFE=$(echo "$ALL_CHANGED" | grep -v '^skills/[^/]*-metadata\.json$' | grep -v '^$' || true)
+          if [ -n "$UNSAFE" ]; then
+            echo "BLOCKED: PR modifies files outside skills/ metadata:"
+            echo "$UNSAFE"
+            echo "safe=false" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+          echo "safe=true" >> "$GITHUB_OUTPUT"
+
       - name: Enrich skill metadata
         id: enrich
-        if: steps.changed.outputs.any == 'true'
+        if: steps.changed.outputs.any == 'true' && (github.event_name == 'push' || steps.scope_check.outputs.safe == 'true')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AGENTGUARD_API_KEY: ${{ secrets.AGENTGUARD_API_KEY }}
