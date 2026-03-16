@@ -34,8 +34,10 @@ jobs:
       # -----------------------------------------------------------------------
       - name: Check for out-of-scope changes
         id: scope
+        env:
+          BASE_REF: ${{ github.base_ref }}
         run: |
-          ALL_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          ALL_FILES=$(git diff --name-only "origin/$BASE_REF"...HEAD)
 
           VIOLATIONS=""
           while IFS= read -r file; do
