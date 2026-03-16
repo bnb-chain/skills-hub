@@ -75,11 +75,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AGENTGUARD_API_KEY: ${{ secrets.AGENTGUARD_API_KEY }}
         run: |
+          # SECURITY: Disable GitHub Actions workflow command processing
+          # during enrichment. Without this, attacker-controlled content
+          # logged by the script can execute workflow commands like
+          # ::set-output, ::add-mask, ::save-state, or ::set-env.
+          echo "::stop-commands::ENRICHMENT_TOKEN_$(date +%s)"
           while IFS= read -r file; do
             echo "::group::Processing $file"
             node scripts/enrich-skill.js "$file"
             echo "::endgroup::"
           done < /tmp/changed-skills.txt
+          echo "::ENRICHMENT_TOKEN_$(date +%s)::"  
 
       # -----------------------------------------------------------------------
       # Same-repo PR: commit enriched files back to the PR branch.
