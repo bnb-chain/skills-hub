@@ -116,11 +116,11 @@ async function enrich(submissionFilePath) {
   const { owner, repo } = parseOwnerRepo(githubUrl);
 
   // 2. Check URL accessibility + fetch repo metadata
-  console.log(`  Checking repo accessibility: ${githubUrl}`);
+  console.log(`  Checking repo accessibility: ${githubUrl.slice(0, 100)}`);
   const repoData = await githubGet(`https://api.github.com/repos/${owner}/${repo}`);
 
   // 3. Fetch owner profile (user or org)
-  console.log(`  Fetching owner profile: ${owner}`);
+  console.log(`  Fetching owner profile: ${owner.replace(/[^a-zA-Z0-9_.-]/g, '_')}`);
   const ownerData = await githubGet(`https://api.github.com/users/${owner}`);
 
   // 4. Fetch latest commit hash
