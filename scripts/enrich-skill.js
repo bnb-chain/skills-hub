@@ -36,6 +36,12 @@ function parseSubmission(filePath) {
   if (!Array.isArray(category) || category.length === 0) {
     throw new Error('Field "category" must be a non-empty array of strings');
   }
+  if (!category.every(c => typeof c === 'string' && c.length > 0 && c.length <= 50)) {
+    throw new Error('Each category must be a non-empty string of at most 50 characters');
+  }
+  if (category.length > 10) {
+    throw new Error('Maximum 10 categories allowed per skill');
+  }
 
   return { name, githubUrl: github_url, category, description };
 }
