@@ -204,6 +204,10 @@ async function enrich(submissionFilePath) {
     agentguard_report_url: agentguardReportUrl,
     agentguard_result:     agentguardResult,
     evaluated_at:          new Date().toISOString(),
+    // Warn consumers that security scan results are point-in-time snapshots.
+    // The repo owner can modify code AFTER scanning without triggering re-scan.
+    scan_disclaimer:       'Security scan reflects repo state at evaluated_at timestamp only. Repo may have changed since.',
+    scan_pinned_commit:    latestCommit,
   };
 
   fs.writeFileSync(absPath, JSON.stringify(enriched, null, 2) + '\n');
