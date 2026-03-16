@@ -78,6 +78,13 @@ async function fetchRepoContent(owner, repo, defaultBranch) {
   if (!treeRes.ok) return null;
   const tree = await treeRes.json();
 
+  // GitHub API truncates trees with > 100,000 entries and sets truncated: true.
+  // Even non-truncated trees from large repos can be very large JSON payloads.
+  // Log a warning if the tree is truncated to help debug missing content.
+  if (tree.truncated) {
+    console.warn('  \u26a0 Git tree was truncated by GitHub API (repo has > 100K files)');
+  }
+
   const candidates = (tree.tree ?? [])
     .filter((f) => f.type === 'blob' && f.path.endsWith('.md'))
     .sort((a, b) => {
