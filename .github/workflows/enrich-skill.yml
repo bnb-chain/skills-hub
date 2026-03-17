@@ -86,13 +86,15 @@ jobs:
       # -----------------------------------------------------------------------
       - name: Commit enriched files to PR branch
         if: steps.changed.outputs.any == 'true' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           # Switch to the actual PR branch so we can push
-          git fetch origin ${{ github.event.pull_request.head.ref }}
-          git checkout ${{ github.event.pull_request.head.ref }}
+          git fetch origin "$HEAD_REF"
+          git checkout "$HEAD_REF"
 
           while IFS= read -r file; do
             git add "$file"
@@ -102,7 +104,7 @@ jobs:
 
           NAMES=$(awk -F'/' '{print $NF}' /tmp/changed-skills.txt | sed 's/-metadata\.json//' | paste -sd ', ')
           git commit -m "chore: enrich metadata for ${NAMES}"
-          git push origin ${{ github.event.pull_request.head.ref }}
+          git push origin "$HEAD_REF" 
 
       # -----------------------------------------------------------------------
       # Fork PR merge / direct push: commit enriched files straight to main.
