@@ -46,8 +46,9 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          EVENT_NAME: ${{ github.event_name }}
         run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
+          if [ "$EVENT_NAME" = "pull_request" ]; then
             FILES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" \
               | grep 'skills/.*-metadata\.json' || true)
           else
