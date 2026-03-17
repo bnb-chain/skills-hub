@@ -60,8 +60,24 @@ async function githubGet(url) {
 }
 
 function parseOwnerRepo(githubUrl) {
-  const m = githubUrl.match(/github\.com\/([^/]+)\/([^/]+?)(?:\.git)?(?:\/.*)?$/);
-  if (!m) throw new Error(`Cannot parse owner/repo from URL: ${githubUrl}`);
+  // Validate URL hostname to prevent SSRF attacks.
+  // Without this check, a crafted URL like https://evil.com/github.com/owner/repo
+  // or https://github.com.evil.com/owner/repo would pass the regex but could
+  // be used to probe internal services or exfiltrate data.
+  let parsed;
+  try {
+    parsed = new URL(githubUrl);
+  } catch {
+    throw new Error(`Invalid URL: ${githubUrl}`);
+  }
+  if (parsed.hostname !== 'github.com' && parsed.hostname !== 'www.github.com') {
+    throw new Error(`URL must point to github.com, got: ${parsed.hostname}`);
+  }
+  if (parsed.protocol !== 'https:') {
+    throw new Error(`URL must use HTTPS protocol, got: ${parsed.protocol}`);
+  }
+  const m = parsed.pathname.match(/^\/([a-zA-Z0-9_.-]+)\/([a-zA-Z0-9_.-]+?)(?:\.git)?(?:\/.*)?$/);
+  if (!m) throw new Error(`Cannot parse owner/repo from URL path: ${parsed.pathname}`);
   return { owner: m[1], repo: m[2] };
 }
 
