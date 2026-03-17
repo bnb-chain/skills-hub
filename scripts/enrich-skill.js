@@ -119,6 +119,19 @@ async function enrich(submissionFilePath) {
   console.log(`  Checking repo accessibility: ${githubUrl}`);
   const repoData = await githubGet(`https://api.github.com/repos/${owner}/${repo}`);
 
+  // Warn if repo is very new (potential spam), archived, or empty
+  const repoAgeMs = Date.now() - new Date(repoData.created_at).getTime();
+  const repoAgeDays = Math.floor(repoAgeMs / (1000 * 60 * 60 * 24));
+  if (repoAgeDays < 7) {
+    console.warn(`  \u26a0 WARNING: Repository is only ${repoAgeDays} day(s) old — may be spam`);
+  }
+  if (repoData.archived) {
+    console.warn(`  \u26a0 WARNING: Repository is archived — skill may be unmaintained`);
+  }
+  if (repoData.size === 0) {
+    throw new Error('Repository is empty (0 KB) — cannot enrich an empty repo');
+  }
+
   // 3. Fetch owner profile (user or org)
   console.log(`  Fetching owner profile: ${owner}`);
   const ownerData = await githubGet(`https://api.github.com/users/${owner}`);
