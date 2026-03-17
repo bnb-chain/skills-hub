@@ -1,6 +1,6 @@
 {
   "name": "ShieldBot",
-  "github_url": "https://github.com/Ridwannurudeen/shieldbot",
+  "github_url": "https://github.com/Ridwannurudeen/shieldbot-skills",
   "category": ["security", "defi", "transaction-analysis"],
   "description": "Autonomous transaction firewall for BNB Chain. AI agents (Hunter, Sentinel, Advisor) scan contracts, detect honeypots and rug pulls, monitor mempools for sandwich attacks, and provide conversational security guidance — all in real-time across 7 EVM chains."
 }
