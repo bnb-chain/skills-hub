@@ -138,10 +138,11 @@ async function enrich(submissionFilePath) {
   let agentguardReportUrl = null;
   let agentguardScanId    = null;
   let agentguardResult    = null;
+  let skillContent        = null;
 
   if (process.env.AGENTGUARD_API_KEY) {
     console.log(`  Fetching repo content for AgentGuard scan`);
-    const skillContent = await fetchRepoContent(owner, repo, repoData.default_branch);
+    skillContent = await fetchRepoContent(owner, repo, repoData.default_branch);
 
     if (!skillContent) {
       console.warn('  ⚠ No scannable content found in repo — skipping AgentGuard');
@@ -200,6 +201,12 @@ async function enrich(submissionFilePath) {
       default_branch: repoData.default_branch,
     },
     latest_commit:         latestCommit,
+    // Content hash: SHA-256 of the scanned content at enrichment time.
+    // If the repo changes after scanning, this hash will no longer match,
+    // making post-scan tampering detectable.
+    content_hash:          skillContent
+      ? require('crypto').createHash('sha256').update(skillContent).digest('hex')
+      : null,
     agentguard_scan_id:    agentguardScanId,
     agentguard_report_url: agentguardReportUrl,
     agentguard_result:     agentguardResult,
