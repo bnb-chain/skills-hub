@@ -8,6 +8,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+concurrency:
+  group: scope-guard-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   check-scope:
     name: Check PR Scope
