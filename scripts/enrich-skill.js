@@ -106,6 +106,23 @@ async function fetchRepoContent(owner, repo, defaultBranch) {
 
 async function enrich(submissionFilePath) {
   const absPath = path.resolve(submissionFilePath);
+
+  // Prevent path traversal and symlink attacks.
+  // Without this, a symlink or crafted path could overwrite arbitrary files.
+  const allowedDir = path.resolve(__dirname, '..', 'skills');
+  if (!absPath.startsWith(allowedDir + path.sep) && !absPath.startsWith(allowedDir + '/')) {
+    throw new Error(`File path must be within the skills/ directory: ${absPath}`);
+  }
+  try {
+    const realPath = fs.realpathSync(absPath);
+    if (!realPath.startsWith(allowedDir + path.sep) && !realPath.startsWith(allowedDir + '/')) {
+      throw new Error(`Resolved path escapes skills/ directory (possible symlink attack): ${realPath}`);
+    }
+  } catch (err) {
+    if (err.code !== 'ENOENT') throw err;
+    // File doesn't exist yet, path check above is sufficient
+  }
+
   const skillId = path.basename(absPath, '-metadata.json');
 
   console.log(`\n→ Enriching: ${skillId}`);
