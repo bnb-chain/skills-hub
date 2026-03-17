@@ -119,6 +119,11 @@ async function enrich(submissionFilePath) {
   console.log(`  Checking repo accessibility: ${githubUrl}`);
   const repoData = await githubGet(`https://api.github.com/repos/${owner}/${repo}`);
 
+  // 2.5 Warn if repo is a fork — could be duplicate content
+  if (repoData.fork && repoData.parent) {
+    console.warn(`  \u26a0 WARNING: Repository is a fork of ${repoData.parent.full_name}`);
+  }
+
   // 3. Fetch owner profile (user or org)
   console.log(`  Fetching owner profile: ${owner}`);
   const ownerData = await githubGet(`https://api.github.com/users/${owner}`);
