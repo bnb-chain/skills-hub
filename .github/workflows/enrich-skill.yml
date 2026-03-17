@@ -43,12 +43,9 @@ jobs:
       # -----------------------------------------------------------------------
       - name: Detect changed skill files
         id: changed
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            FILES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" \
+            FILES=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" \
               | grep 'skills/.*-metadata\.json' || true)
           else
             FILES=$(git diff --name-only HEAD~1 HEAD \
@@ -68,9 +65,36 @@ jobs:
       # -----------------------------------------------------------------------
       # Run enrichment script — writes results back into each submission file.
       # -----------------------------------------------------------------------
+      # Verify that ONLY skill metadata files are changed in this PR.
+      # This is critical because scope-guard.yml runs as an INDEPENDENT workflow
+      # and cannot block this workflow. An attacker can modify both a skill file
+      # AND scripts/enrich-skill.js in the same PR — scope-guard will fail, but
+      # this workflow still executes the attacker's modified script with secrets.
+      - name: Inline scope verification
+        id: scope_check
+        if: steps.changed.outputs.any == 'true' && github.event_name == 'pull_request'
+        run: |
+          ALL_CHANGED=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
+          # Allow only: skill metadata files (excluding the template) and root README.md.
+          # Aligned with scope-guard — contributors may add/edit their metadata and the root readme.
+          UNSAFE=$(echo "$ALL_CHANGED" | grep -vE '^skills/[^/]*-metadata\.json$|^README\.md$' | grep -v '^$' || true)
+          TEMPLATE_CHANGED=$(echo "$ALL_CHANGED" | grep '^skills/_TEMPLATE-metadata\.json$' || true)
+          if [ -n "$UNSAFE" ] || [ -n "$TEMPLATE_CHANGED" ]; then
+            echo "BLOCKED: PR modifies files outside allowed scope (skill metadata + root README.md):"
+            if [ -n "$UNSAFE" ]; then
+              echo "$UNSAFE"
+            fi
+            if [ -n "$TEMPLATE_CHANGED" ]; then
+              echo "skills/_TEMPLATE-metadata.json is out-of-scope for this workflow."
+            fi
+            echo "safe=false" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+          echo "safe=true" >> "$GITHUB_OUTPUT"
+
       - name: Enrich skill metadata
         id: enrich
-        if: steps.changed.outputs.any == 'true'
+        if: steps.changed.outputs.any == 'true' && (github.event_name == 'push' || steps.scope_check.outputs.safe == 'true')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AGENTGUARD_API_KEY: ${{ secrets.AGENTGUARD_API_KEY }}
