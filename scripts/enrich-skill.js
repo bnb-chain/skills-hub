@@ -198,6 +198,13 @@ async function enrich(submissionFilePath) {
     repo: {
       stars:          repoData.stargazers_count,
       default_branch: repoData.default_branch,
+      created_at:     repoData.created_at,
+      updated_at:     repoData.updated_at,
+      forks:          repoData.forks_count,
+      open_issues:    repoData.open_issues_count,
+      size_kb:        repoData.size,
+      is_fork:        repoData.fork,
+      archived:       repoData.archived,
     },
     latest_commit:         latestCommit,
     agentguard_scan_id:    agentguardScanId,
