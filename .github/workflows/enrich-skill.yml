@@ -12,6 +12,13 @@ on:
     paths:
       - "skills/**-metadata.json"
 
+# Restrict default permissions to read-only at the workflow level.
+# Individual jobs explicitly request the elevated permissions they need.
+# This follows the principle of least privilege and prevents accidental
+# write access in future jobs added to this workflow.
+permissions:
+  contents: read
+
 jobs:
   enrich:
     name: Enrich & Validate Skills
