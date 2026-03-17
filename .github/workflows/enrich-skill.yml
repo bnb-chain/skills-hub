@@ -43,12 +43,9 @@ jobs:
       # -----------------------------------------------------------------------
       - name: Detect changed skill files
         id: changed
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            FILES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" \
+            FILES=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" \
               | grep 'skills/.*-metadata\.json' || true)
           else
             FILES=$(git diff --name-only HEAD~1 HEAD \
@@ -76,15 +73,20 @@ jobs:
       - name: Inline scope verification
         id: scope_check
         if: steps.changed.outputs.any == 'true' && github.event_name == 'pull_request'
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          ALL_CHANGED=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
-          UNSAFE=$(echo "$ALL_CHANGED" | grep -v '^skills/[^/]*-metadata\.json$' | grep -v '^$' || true)
-          if [ -n "$UNSAFE" ]; then
-            echo "BLOCKED: PR modifies files outside skills/ metadata:"
-            echo "$UNSAFE"
+          ALL_CHANGED=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
+          # Allow only skill metadata files (excluding the template) and skills/README.md.
+          # Anything else is considered unsafe.
+          UNSAFE=$(echo "$ALL_CHANGED" | grep -vE '^skills/[^/]*-metadata\.json$|^skills/README\.md$' | grep -v '^$' || true)
+          TEMPLATE_CHANGED=$(echo "$ALL_CHANGED" | grep '^skills/_TEMPLATE-metadata\.json$' || true)
+          if [ -n "$UNSAFE" ] || [ -n "$TEMPLATE_CHANGED" ]; then
+            echo "BLOCKED: PR modifies files outside allowed skills/ scope:"
+            if [ -n "$UNSAFE" ]; then
+              echo "$UNSAFE"
+            fi
+            if [ -n "$TEMPLATE_CHANGED" ]; then
+              echo "skills/_TEMPLATE-metadata.json is out-of-scope for this workflow."
+            fi
             echo "safe=false" >> "$GITHUB_OUTPUT"
             exit 1
           fi
