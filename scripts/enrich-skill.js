@@ -53,8 +53,8 @@ function githubHeaders() {
 async function githubGet(url) {
   const res = await fetch(url, { headers: githubHeaders() });
   if (!res.ok) {
-    const body = await res.text();
-    throw new Error(`GitHub API error ${res.status} for ${url}: ${body}`);
+    const body = (await res.text()).slice(0, 200);
+    throw new Error(`GitHub API error ${res.status} for ${url}`);
   }
   return res.json();
 }
