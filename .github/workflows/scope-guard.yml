@@ -56,6 +56,19 @@ jobs:
             VIOLATIONS="${VIOLATIONS}${file}\n"
           done <<< "$ALL_FILES"
 
+          # Check for Unicode homoglyph attacks in skill filenames.
+          # An attacker can submit skills/bnbchain-skılls-metadata.json (Turkish ı)
+          # which looks identical to skills/bnbchain-skills-metadata.json in most UIs
+          # but is a different file. This enables impersonation of legitimate skills.
+          while IFS= read -r file; do
+            if echo "$file" | grep -qE '^skills/'; then
+              # Check for non-ASCII characters in filename
+              if echo "$file" | grep -qP '[^\x00-\x7F]'; then
+                VIOLATIONS="${VIOLATIONS}${file} (contains non-ASCII characters)\n"
+              fi
+            fi
+          done <<< "$ALL_FILES"
+
           if [ -n "$VIOLATIONS" ]; then
             echo "violations=true" >> "$GITHUB_OUTPUT"
             # Write to temp file — not interpolated into shell or JS
