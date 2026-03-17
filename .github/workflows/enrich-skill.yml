@@ -75,12 +75,12 @@ jobs:
         if: steps.changed.outputs.any == 'true' && github.event_name == 'pull_request'
         run: |
           ALL_CHANGED=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
-          # Allow only skill metadata files (excluding the template) and skills/README.md.
-          # Anything else is considered unsafe.
-          UNSAFE=$(echo "$ALL_CHANGED" | grep -vE '^skills/[^/]*-metadata\.json$|^skills/README\.md$' | grep -v '^$' || true)
+          # Allow only: skill metadata files (excluding the template) and root README.md.
+          # Aligned with scope-guard — contributors may add/edit their metadata and the root readme.
+          UNSAFE=$(echo "$ALL_CHANGED" | grep -vE '^skills/[^/]*-metadata\.json$|^README\.md$' | grep -v '^$' || true)
           TEMPLATE_CHANGED=$(echo "$ALL_CHANGED" | grep '^skills/_TEMPLATE-metadata\.json$' || true)
           if [ -n "$UNSAFE" ] || [ -n "$TEMPLATE_CHANGED" ]; then
-            echo "BLOCKED: PR modifies files outside allowed skills/ scope:"
+            echo "BLOCKED: PR modifies files outside allowed scope (skill metadata + root README.md):"
             if [ -n "$UNSAFE" ]; then
               echo "$UNSAFE"
             fi
