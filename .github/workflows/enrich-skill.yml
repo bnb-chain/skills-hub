@@ -21,13 +21,21 @@ jobs:
       pull-requests: write  # needed to post PR comments
 
     steps:
-      - name: Checkout
+      - name: Checkout PR content
         uses: actions/checkout@v4
         with:
           # For pull_request: checks out the PR head commit (works for both fork and same-repo).
           # For push: checks out the pushed commit on main.
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
+
+      # Checkout trusted scripts from the base branch to prevent script poisoning.
+      # Without this, a PR author can modify scripts/enrich-skill.js in their PR
+      # and the workflow will execute the attacker's version instead of the trusted one.
+      - name: Restore trusted scripts from base branch
+        if: github.event_name == 'pull_request'
+        run: |
+          git checkout ${{ github.event.pull_request.base.sha }} -- scripts/
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
