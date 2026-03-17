@@ -146,14 +146,22 @@ jobs:
               return;
             }
 
+            // Sanitize user-controlled fields to prevent markdown injection.
+            // Attackers can inject phishing links, tracking images, or @mention spam.
+            const sanitize = (s) => String(s ?? '').replace(/[\[\]()\\`*_~<>@!#|]/g, '');
+            const sanitizeUrl = (u) => {
+              try { const url = new URL(u); return ['https:', 'http:'].includes(url.protocol) ? u : '#'; }
+              catch { return '#'; }
+            };
+
             const rows = skills.map(s => {
               const guard = s.agentguard_report_url
-                ? `[View report](${s.agentguard_report_url})`
+                ? `[View report](${sanitizeUrl(s.agentguard_report_url)})`
                 : '⏳ pending';
               return [
-                `**[${s.name}](${s.github_url})**`,
-                (s.category ?? []).join(', '),
-                `[@${s.owner.username}](${s.owner.profile_url})`,
+                `**[${sanitize(s.name)}](${sanitizeUrl(s.github_url)})**`,
+                (s.category ?? []).map(sanitize).join(', '),
+                `[@${sanitize(s.owner.username)}](${sanitizeUrl(s.owner.profile_url)})`,
                 `\`${(s.latest_commit || 'n/a').slice(0, 7)}\``,
                 guard,
               ].join(' | ');
