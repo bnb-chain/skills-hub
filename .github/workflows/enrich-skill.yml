@@ -100,7 +100,7 @@ jobs:
 
           git diff --staged --quiet && echo "No changes to commit" && exit 0
 
-          NAMES=$(awk -F'/' '{print $NF}' /tmp/changed-skills.txt | sed 's/-metadata\.json//' | paste -sd ', ')
+          NAMES=$(awk -F'/' '{print $NF}' /tmp/changed-skills.txt | sed 's/-metadata\.json//' | tr -cd 'a-zA-Z0-9 ,_-' | paste -sd ', ')
           git commit -m "chore: enrich metadata for ${NAMES}"
           git push origin ${{ github.event.pull_request.head.ref }}
 
@@ -119,7 +119,7 @@ jobs:
 
           git diff --staged --quiet && echo "No changes to commit" && exit 0
 
-          NAMES=$(awk -F'/' '{print $NF}' /tmp/changed-skills.txt | sed 's/-metadata\.json//' | paste -sd ', ')
+          NAMES=$(awk -F'/' '{print $NF}' /tmp/changed-skills.txt | sed 's/-metadata\.json//' | tr -cd 'a-zA-Z0-9 ,_-' | paste -sd ', ')
           git commit -m "chore: enrich metadata for ${NAMES}"
           git push origin HEAD:main
 
