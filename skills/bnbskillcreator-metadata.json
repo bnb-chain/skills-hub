@@ -1,0 +1,6 @@
+{
+  "name": "BNB Skill Creator",
+  "github_url": "https://github.com/ternencescott/bnbskillcreator",
+  "category": ["bnb-chain", "skill-creation", "github", "beginner-friendly"],
+  "description": "Help a beginner create a Codex/Claude skill, publish it in a public GitHub repository, and submit a valid metadata pull request to bnb-chain/skills-hub. Use this whenever the user wants to create a new skill for BNB Chain Skills Hub, submit a skill to skills-hub, prepare a metadata JSON, or needs end-to-end help with GitHub, forks, branches, commits, and pull requests."
+}
