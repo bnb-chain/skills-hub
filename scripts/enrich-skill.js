@@ -115,6 +115,28 @@ async function enrich(submissionFilePath) {
 
   const { owner, repo } = parseOwnerRepo(githubUrl);
 
+  // 1.5 Check for duplicate submissions pointing to the same repo
+  const skillsDir = path.resolve(__dirname, '..', 'skills');
+  if (fs.existsSync(skillsDir)) {
+    const existingFiles = fs.readdirSync(skillsDir)
+      .filter(f => f.endsWith('-metadata.json') && f !== '_TEMPLATE-metadata.json' && f !== path.basename(absPath));
+    for (const existing of existingFiles) {
+      try {
+        const data = JSON.parse(fs.readFileSync(path.join(skillsDir, existing), 'utf8'));
+        if (data.github_url) {
+          const existingParsed = parseOwnerRepo(data.github_url);
+          if (existingParsed.owner.toLowerCase() === owner.toLowerCase() &&
+              existingParsed.repo.toLowerCase() === repo.toLowerCase()) {
+            throw new Error(`Duplicate: repo ${owner}/${repo} is already registered in ${existing}`);
+          }
+        }
+      } catch (err) {
+        if (err.message.startsWith('Duplicate:')) throw err;
+        // Skip files that can't be parsed
+      }
+    }
+  }
+
   // 2. Check URL accessibility + fetch repo metadata
   console.log(`  Checking repo accessibility: ${githubUrl}`);
   const repoData = await githubGet(`https://api.github.com/repos/${owner}/${repo}`);
