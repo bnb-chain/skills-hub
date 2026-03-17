@@ -78,13 +78,35 @@ async function fetchRepoContent(owner, repo, defaultBranch) {
   if (!treeRes.ok) return null;
   const tree = await treeRes.json();
 
+  // SECURITY: Scan code files, not just markdown.
+  // Previously only .md files were scanned, allowing trivial evasion:
+  // attacker keeps .md files clean while hiding malicious code in .py/.js/.sol
+  // The AgentGuard "safe" verdict then creates false assurance.
+  const SCANNABLE_EXTENSIONS = [
+    '.md', '.txt', '.json',                      // docs & config
+    '.js', '.ts', '.mjs', '.cjs',                // javascript
+    '.py', '.rb', '.go', '.rs',                  // backend
+    '.sol', '.vy',                               // smart contracts
+    '.sh', '.bash', '.zsh',                      // shell scripts
+    '.yml', '.yaml', '.toml',                    // config
+    '.env.example', '.env.sample',               // env templates
+  ];
+  const isScannable = (p) => SCANNABLE_EXTENSIONS.some(ext => p.endsWith(ext));
+
   const candidates = (tree.tree ?? [])
-    .filter((f) => f.type === 'blob' && f.path.endsWith('.md'))
+    .filter((f) => f.type === 'blob' && isScannable(f.path))
     .sort((a, b) => {
-      const score = (p) => (p.match(/^[^/]+\.md$/i) ? 0 : 1);
+      // Prioritize: SKILL.md/README > other .md > smart contracts > code > config
+      const score = (p) => {
+        if (p.match(/^(SKILL|README|SECURITY)\.md$/i)) return 0;
+        if (p.endsWith('.md')) return 1;
+        if (p.endsWith('.sol') || p.endsWith('.vy')) return 2;
+        if (p.match(/\.(js|ts|py|go|rs|rb)$/)) return 3;
+        return 4;
+      };
       return score(a.path) - score(b.path);
     })
-    .slice(0, 5);
+    .slice(0, 10);
 
   if (!candidates.length) return null;
 
