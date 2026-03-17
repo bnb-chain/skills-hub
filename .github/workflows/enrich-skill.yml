@@ -71,13 +71,21 @@ jobs:
       - name: Enrich skill metadata
         id: enrich
         if: steps.changed.outputs.any == 'true'
+        # SECURITY: Explicitly unset sensitive runner environment variables.
+        # The GitHub Actions runner exposes ACTIONS_RUNTIME_TOKEN,
+        # ACTIONS_CACHE_URL, and ACTIONS_RESULTS_URL in the environment.
+        # A compromised enrichment script could use these to:
+        # - Access the Actions cache service (read/poison cached data)
+        # - Interact with the Actions artifact storage
+        # - Probe GitHub's internal Actions infrastructure
+        # By running the script via env -u, these tokens are stripped.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AGENTGUARD_API_KEY: ${{ secrets.AGENTGUARD_API_KEY }}
         run: |
           while IFS= read -r file; do
             echo "::group::Processing $file"
-            node scripts/enrich-skill.js "$file"
+            env -u ACTIONS_RUNTIME_TOKEN -u ACTIONS_CACHE_URL -u ACTIONS_RESULTS_URL -u ACTIONS_ID_TOKEN_REQUEST_URL -u ACTIONS_ID_TOKEN_REQUEST_TOKEN node scripts/enrich-skill.js "$file"
             echo "::endgroup::"
           done < /tmp/changed-skills.txt
 
