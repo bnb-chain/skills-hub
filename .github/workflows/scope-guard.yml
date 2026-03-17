@@ -77,7 +77,9 @@ jobs:
             const files = fs.readFileSync('/tmp/violations.txt', 'utf8')
               .trim().split('\n').filter(Boolean);
 
-            const rows = files.map(f => `| \`${f}\` |`).join('\n');
+            // Escape backticks and markdown chars in filenames to prevent injection
+            const esc = (s) => s.replace(/`/g, "'").replace(/[\[\]()\\*_~<>@!#|]/g, '');
+            const rows = files.map(f => `| \`${esc(f)}\` |`).join('\n');
 
             const body = [
               '## Scope Guard: Out-of-Scope Changes Detected',
