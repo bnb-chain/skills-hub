@@ -74,6 +74,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AGENTGUARD_API_KEY: ${{ secrets.AGENTGUARD_API_KEY }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
         run: |
           while IFS= read -r file; do
             echo "::group::Processing $file"

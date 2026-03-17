@@ -123,6 +123,29 @@ async function enrich(submissionFilePath) {
   console.log(`  Fetching owner profile: ${owner}`);
   const ownerData = await githubGet(`https://api.github.com/users/${owner}`);
 
+  // SECURITY: Flag if the PR submitter is not the repo owner.
+  // Detects name-squatting where someone submits skills for repos they don't own.
+  const prAuthor = process.env.PR_AUTHOR || null;
+  if (prAuthor && ownerData.login.toLowerCase() !== prAuthor.toLowerCase()) {
+    try {
+      const contribRes = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/contributors?per_page=100`,
+        { headers: githubHeaders() }
+      );
+      if (contribRes.ok) {
+        const contributors = await contribRes.json();
+        const isContributor = contributors.some(
+          c => c.login.toLowerCase() === prAuthor.toLowerCase()
+        );
+        if (!isContributor) {
+          console.warn(`  WARNING: PR author (@${prAuthor}) is NOT the repo owner (@${ownerData.login}) and has no contributions`);
+        }
+      }
+    } catch {
+      console.warn('  WARNING: Could not verify PR author relationship to repo');
+    }
+  }
+
   // 4. Fetch latest commit hash
   console.log(`  Fetching latest commit hash`);
   const commits = await githubGet(
