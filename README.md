@@ -9,22 +9,21 @@ A community-curated registry of skills for the BNBChain ecosystem. Each skill is
 Paste this prompt to connect any agent to the Skills Hub:
 
 ```
-Fetch https://raw.githubusercontent.com/bnb-chain/skills-hub/main/skills/index.json
+Run: npx bnbskills add skills-hub
+This installs the /skills-hub meta-skill which guides you through the full registry.
 
-This is the BNBChain Skills Hub registry. Each entry has a slug, description, category,
+Then fetch https://raw.githubusercontent.com/bnb-chain/skills-hub/main/skills/index.json
+to discover all available skills. Each entry has a slug, description, category,
 skill_url, and AgentGuard security fields (risk_score, risk_level, verdict).
 
 To install a skill:
-  npx skills-hub add <slug>
+  npx bnbskills add <slug>
 
 Selection rules:
 - Match the user's task to skill category and description
 - risk_level "safe" or "low"  → install freely
 - risk_level "medium"         → show agentguard_report_url to user first
 - risk_level "high"           → do not install
-
-Start with: npx bnbskills add skills-hub
-This installs the /skills-hub meta-skill which guides you through the full registry.
 ```
 
 ---
