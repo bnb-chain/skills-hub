@@ -1,0 +1,16 @@
+{
+  "name": "skills-hub",
+  "version": "1.0.0",
+  "description": "BNBChain Skills Hub — discover and install skills for AI agents",
+  "bin": {
+    "skills-hub": "bin/cli.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "generate-index": "node scripts/generate-index.js"
+  },
+  "keywords": ["bnbchain", "ai", "skills", "agents", "claude"],
+  "license": "MIT"
+}

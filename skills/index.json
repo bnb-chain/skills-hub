@@ -1,0 +1,116 @@
+{
+  "generated_at": "2026-03-17T15:55:08.841Z",
+  "source": "https://github.com/bnb-chain/skills-hub",
+  "skills": [
+    {
+      "slug": "bnbchain-skills",
+      "name": "bnbchain skills",
+      "description": "A skill for building on BNBChain - covers EVM interactions, smart contracts, tokens, NFTs, wallet operations, ERC-8004 agent tools, and Greenfield storage. Use it when developing or querying BNB Smart Chain and opBNB infrastructure via the BNB Chain MCP.",
+      "category": [
+        "infrastructure",
+        "blockchain"
+      ],
+      "github_url": "https://github.com/bnb-chain/bnbchain-skills",
+      "skill_url": null,
+      "owner": "bnb-chain",
+      "risk_score": 0,
+      "risk_level": "safe",
+      "verdict": "passed",
+      "agentguard_report_url": "https://agentguard.gopluslabs.io/report/60f77a64-d05c-49c0-8ab6-29ba52e029a2",
+      "evaluated_at": "2026-03-11T16:26:58.437Z"
+    },
+    {
+      "slug": "bnbskillcreator",
+      "name": "BNB Skill Creator",
+      "description": "Help a beginner create a Codex/Claude skill, publish it in a public GitHub repository, and submit a valid metadata pull request to bnb-chain/skills-hub. Use this whenever the user wants to create a new skill for BNB Chain Skills Hub, submit a skill to skills-hub, prepare a metadata JSON, or needs end-to-end help with GitHub, forks, branches, commits, and pull requests.",
+      "category": [
+        "bnb-chain",
+        "skill-creation",
+        "github",
+        "beginner-friendly"
+      ],
+      "github_url": "https://github.com/ternencescott/bnbskillcreator",
+      "skill_url": null,
+      "owner": "ternencescott",
+      "risk_score": 0,
+      "risk_level": "safe",
+      "verdict": "passed",
+      "agentguard_report_url": "https://agentguard.gopluslabs.io/report/1b94d0af-04f9-4b81-a880-b950c91ef289",
+      "evaluated_at": "2026-03-17T09:34:09.720Z"
+    },
+    {
+      "slug": "myriad-markets-skills",
+      "name": "Myriad Markets Skills",
+      "description": "Use the Myriad CLI to trade prediction markets on Myriad Markets",
+      "category": [
+        "Myriad Markets",
+        "Prediction Markets"
+      ],
+      "github_url": "https://github.com/MyriadProtocol/myriad-cli",
+      "skill_url": null,
+      "owner": "MyriadProtocol",
+      "risk_score": 25,
+      "risk_level": "low",
+      "verdict": "passed",
+      "agentguard_report_url": "https://agentguard.gopluslabs.io/report/354d5380-f81c-408a-985e-147faf19c7c6",
+      "evaluated_at": "2026-03-17T09:59:38.031Z"
+    },
+    {
+      "slug": "qlwy-fortune",
+      "name": "QLWY Fortune Casting",
+      "description": "On-chain I Ching divination (链上算卦) powered by Binance Oracle VRF. Cast hexagrams, mint NFT fortunes, and get AI-powered readings via BAP-578 agent protocol.",
+      "category": [
+        "divination",
+        "nft",
+        "vrf",
+        "ai",
+        "i-ching"
+      ],
+      "github_url": "https://github.com/qlwy-xyz/fortune-skill",
+      "skill_url": null,
+      "owner": "qlwy-xyz",
+      "risk_score": 0,
+      "risk_level": "safe",
+      "verdict": "passed",
+      "agentguard_report_url": "https://agentguard.gopluslabs.io/report/7394b2af-d07d-4bb1-b7cb-f31033360e0e",
+      "evaluated_at": "2026-03-17T09:51:27.965Z"
+    },
+    {
+      "slug": "skills-hub",
+      "name": "skills-hub",
+      "description": "The BNBChain Skills Hub meta-skill. Connects agents to the full ecosystem skill registry — discover, evaluate via AgentGuard security scores, and install skills with a single command. Start here to find any BNBChain capability.",
+      "category": [
+        "skill-discovery",
+        "registry",
+        "bnb-chain"
+      ],
+      "github_url": "https://github.com/bnb-chain/skills-hub",
+      "skill_url": "https://raw.githubusercontent.com/bnb-chain/skills-hub/main/skills/skills-hub-skill.md",
+      "owner": null,
+      "risk_score": null,
+      "risk_level": null,
+      "verdict": null,
+      "agentguard_report_url": null,
+      "evaluated_at": null
+    },
+    {
+      "slug": "vibers-code-review",
+      "name": "Vibers Code Review",
+      "description": "Human code review for AI-generated projects. Checks spec compliance, security (OWASP top 10), AI hallucinations, and submits PRs with fixes.",
+      "category": [
+        "code-review",
+        "security",
+        "github-actions",
+        "ai"
+      ],
+      "github_url": "https://github.com/marsiandeployer/vibers-action",
+      "skill_url": null,
+      "owner": "marsiandeployer",
+      "risk_score": 0,
+      "risk_level": "safe",
+      "verdict": "passed",
+      "agentguard_report_url": "https://agentguard.gopluslabs.io/report/b37b90c7-0e28-4567-a54d-af250b7d3416",
+      "evaluated_at": "2026-03-17T09:51:47.363Z"
+    }
+  ]
+}

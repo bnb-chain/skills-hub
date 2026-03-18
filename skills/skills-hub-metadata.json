@@ -1,0 +1,11 @@
+{
+  "name": "skills-hub",
+  "github_url": "https://github.com/bnb-chain/skills-hub",
+  "skill_url": "https://raw.githubusercontent.com/bnb-chain/skills-hub/main/skills/skills-hub-skill.md",
+  "category": [
+    "skill-discovery",
+    "registry",
+    "bnb-chain"
+  ],
+  "description": "The BNBChain Skills Hub meta-skill. Connects agents to the full ecosystem skill registry — discover, evaluate via AgentGuard security scores, and install skills with a single command. Start here to find any BNBChain capability."
+}

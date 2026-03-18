@@ -84,6 +84,13 @@ jobs:
           done < /tmp/changed-skills.txt
 
       # -----------------------------------------------------------------------
+      # Regenerate skills/index.json after enrichment.
+      # -----------------------------------------------------------------------
+      - name: Generate skill index
+        if: steps.changed.outputs.any == 'true'
+        run: node scripts/generate-index.js
+
+      # -----------------------------------------------------------------------
       # Same-repo PR: commit enriched files back to the PR branch.
       # -----------------------------------------------------------------------
       - name: Commit enriched files to PR branch
@@ -99,6 +106,7 @@ jobs:
           while IFS= read -r file; do
             git add "$file"
           done < /tmp/changed-skills.txt
+          git add skills/index.json
 
           git diff --staged --quiet && echo "No changes to commit" && exit 0
 
@@ -118,6 +126,7 @@ jobs:
           while IFS= read -r file; do
             git add "$file"
           done < /tmp/changed-skills.txt
+          git add skills/index.json
 
           git diff --staged --quiet && echo "No changes to commit" && exit 0
 
