@@ -23,7 +23,7 @@ Selection rules:
 - risk_level "medium"         → show agentguard_report_url to user first
 - risk_level "high"           → do not install
 
-Start with: npx skills-hub add skills-hub
+Start with: npx bnbskills add skills-hub
 This installs the /skills-hub meta-skill which guides you through the full registry.
 ```
 
@@ -33,16 +33,16 @@ This installs the /skills-hub meta-skill which guides you through the full regis
 
 ```bash
 # Browse all available skills
-npx skills-hub list
+npx bnbskills list
 
 # Search by keyword or category
-npx skills-hub search <query>
+npx bnbskills search <query>
 
 # Install a skill into the current project
-npx skills-hub add <slug>
+npx bnbskills add <slug>
 
 # Install globally (available across all projects)
-npx skills-hub add <slug> --global
+npx bnbskills add <slug> --global
 ```
 
 ---

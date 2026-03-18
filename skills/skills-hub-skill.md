@@ -14,7 +14,7 @@ GET https://raw.githubusercontent.com/bnb-chain/skills-hub/main/skills/index.jso
 ```
 
 The index contains for each skill:
-- `slug` — install identifier (used with `npx skills-hub add <slug>`)
+- `slug` — install identifier (used with `npx bnbskills add <slug>`)
 - `name`, `description`, `category` — what the skill does
 - `skill_url` — direct URL to the skill file (null if not installable via CLI)
 - `risk_score`, `risk_level`, `verdict` — AgentGuard security assessment
@@ -37,10 +37,10 @@ Always surface the `agentguard_report_url` when recommending a skill so the user
 
 ```bash
 # Install to current project
-npx skills-hub add <slug>
+npx bnbskills add <slug>
 
 # Install globally (available in all projects)
-npx skills-hub add <slug> --global
+npx bnbskills add <slug> --global
 ```
 
 The skill is installed to `.claude/skills/<slug>.md` and can be invoked immediately as `/<slug>`.
@@ -49,10 +49,10 @@ The skill is installed to `.claude/skills/<slug>.md` and can be invoked immediat
 
 ```bash
 # Browse all skills with risk levels
-npx skills-hub list
+npx bnbskills list
 
 # Search by keyword or category
-npx skills-hub search <query>
+npx bnbskills search <query>
 ```
 
 ## Example workflows
@@ -61,19 +61,19 @@ npx skills-hub search <query>
 1. Fetch index.json
 2. Filter: `category` contains `blockchain` or `infrastructure`
 3. Find: `bnbchain-skills` — risk_score: 0, verdict: passed ✅
-4. Run: `npx skills-hub add bnbchain-skills`
+4. Run: `npx bnbskills add bnbchain-skills`
 5. Use: `/bnbchain-skills`
 
 **"I want to trade on a prediction market"**
 1. Fetch index.json
 2. Filter: `category` contains `prediction-markets` or `trading`
 3. Find: `myriad-markets-skills` — check risk level before proceeding
-4. If acceptable: `npx skills-hub add myriad-markets-skills`
+4. If acceptable: `npx bnbskills add myriad-markets-skills`
 
 **"I need to add a new skill to the registry"**
 1. Filter: `category` contains `skill-creation`
 2. Find: `bnbskillcreator` — guides beginners through skill submission
-3. Run: `npx skills-hub add bnbskillcreator`
+3. Run: `npx bnbskills add bnbskillcreator`
 
 ## Registry source
 

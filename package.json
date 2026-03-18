@@ -1,9 +1,9 @@
 {
-  "name": "skills-hub",
+  "name": "bnbskills",
   "version": "1.0.0",
   "description": "BNBChain Skills Hub — discover and install skills for AI agents",
   "bin": {
-    "skills-hub": "bin/cli.js"
+    "bnbskills": "bin/cli.js"
   },
   "engines": {
     "node": ">=18"
