@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-18T10:05:31.340Z",
+  "generated_at": "2026-03-18T10:28:22.064Z",
   "source": "https://github.com/bnb-chain/skills-hub",
   "skills": [
     {
@@ -90,8 +90,8 @@
       "risk_score": 0,
       "risk_level": "safe",
       "verdict": "passed",
-      "agentguard_report_url": "https://agentguard.gopluslabs.io/report/a5a7e278-9d84-40a0-a658-e7034cc4b70d",
-      "evaluated_at": "2026-03-18T10:05:31.300Z"
+      "agentguard_report_url": "https://agentguard.gopluslabs.io/report/3616ce1e-38d5-4742-a361-7431a7db03b8",
+      "evaluated_at": "2026-03-18T10:28:22.022Z"
     },
     {
       "slug": "vibers-code-review",
