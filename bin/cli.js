@@ -9,8 +9,45 @@ const INDEX_URL = 'https://raw.githubusercontent.com/bnb-chain/skills-hub/main/s
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
+const ALLOWED_SKILL_HOST = 'raw.githubusercontent.com';
+
+const SAFE_SLUG_RE = /^[a-z0-9][a-z0-9-]{0,63}$/;
+
+function assertSafeSlug(slug) {
+  if (!SAFE_SLUG_RE.test(slug)) {
+    throw new Error(
+      `Skill slug "${slug}" contains invalid characters. ` +
+      `Only lowercase letters, numbers, and hyphens are allowed.`
+    );
+  }
+}
+
+function assertSafeWritePath(dest, base) {
+  const resolvedDest = path.resolve(dest);
+  const resolvedBase = path.resolve(base);
+  if (!resolvedDest.startsWith(resolvedBase + path.sep)) {
+    throw new Error(`Path traversal detected: "${dest}" escapes the skills directory.`);
+  }
+}
+
+function assertSafeSkillUrl(url) {
+  let parsed;
+  try { parsed = new URL(url); } catch {
+    throw new Error(`Invalid skill_url: ${url}`);
+  }
+  if (parsed.protocol !== 'https:') {
+    throw new Error(`skill_url must use HTTPS: ${url}`);
+  }
+  if (parsed.hostname !== ALLOWED_SKILL_HOST) {
+    throw new Error(
+      `skill_url host "${parsed.hostname}" is not allowed. ` +
+      `Only ${ALLOWED_SKILL_HOST} is permitted.`
+    );
+  }
+}
+
 async function fetchText(url) {
-  const res = await fetch(url);
+  const res = await fetch(url, { redirect: 'error' });
   if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${url}`);
   return res.text();
 }
@@ -71,6 +108,14 @@ async function cmdAdd(slug, opts) {
     process.exit(1);
   }
 
+  try {
+    assertSafeSlug(skill.slug);
+    assertSafeSkillUrl(skill.skill_url);
+  } catch (err) {
+    console.error(`\n🔴 Blocked: ${err.message}`);
+    process.exit(1);
+  }
+
   console.log(`Downloading ${skill.name} (${riskBadge(skill.risk_level)} ${skill.risk_level ?? 'unscanned'})…`);
   const content = await fetchText(skill.skill_url);
 
@@ -78,6 +123,13 @@ async function cmdAdd(slug, opts) {
   fs.mkdirSync(dir, { recursive: true });
 
   const dest = path.join(dir, `${skill.slug}.md`);
+  try {
+    assertSafeWritePath(dest, dir);
+  } catch (err) {
+    console.error(`\n🔴 Blocked: ${err.message}`);
+    process.exit(1);
+  }
+
   fs.writeFileSync(dest, content, 'utf8');
 
   console.log(`\n✅ Installed: ${dest}`);
