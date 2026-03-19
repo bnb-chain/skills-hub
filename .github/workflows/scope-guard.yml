@@ -11,6 +11,7 @@ on:
 jobs:
   check-scope:
     name: Check PR Scope
+    if: "!contains(github.event.pull_request.labels.*.name, 'maintainer-pr')"
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
