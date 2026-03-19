@@ -56,15 +56,15 @@ Contributor opens PR
         ├─ category
         └─ description
              ↓
-GitHub Actions workflow runs automatically
+GitHub Actions workflow runs automatically (on pull_request)
   ├─ ✓ Fetches owner info, repo stars, latest commit
   ├─ ✓ Calls AgentGuard API → injects security report
   ├─ ✓ Stamps evaluated_at timestamp
-  └─ ✓ Regenerates skills/index.json
+  └─ ✓ Commits enriched *-metadata.json back to PR branch
              ↓
 PR comment shows enrichment preview
              ↓
-Merge → enriched files committed automatically
+Merge → on push to main: enriched files + skills/index.json committed automatically
 ```
 
 ---

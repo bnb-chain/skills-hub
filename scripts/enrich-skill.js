@@ -34,14 +34,52 @@ function parseSubmission(filePath) {
   if (!github_url)  throw new Error('Missing required field: github_url');
   if (!category)    throw new Error('Missing required field: category');
   if (!description) throw new Error('Missing required field: description');
-  if (!Array.isArray(category) || category.length === 0) {
-    throw new Error('Field "category" must be a non-empty array of strings');
+  if (
+    !Array.isArray(category) ||
+    category.length === 0 ||
+    !category.every((c) => typeof c === 'string' && c.trim() !== '')
+  ) {
+    throw new Error('Field "category" must be a non-empty array of non-empty strings');
   }
 
-  // Optional contributor-provided fields (passed through unchanged)
-  const skillUrl = data.skill_url ?? null;
+  // Optional contributor-provided fields (validated before passthrough)
+  const skillUrl = validateSkillUrl(github_url, data.skill_url ?? null);
 
   return { name, githubUrl: github_url, skillUrl, category, description };
+}
+
+/**
+ * Validates that a contributor-provided skill_url, if present, is a real URL
+ * on github.com or raw.githubusercontent.com and points to the same owner/repo
+ * as github_url. This prevents a submission from passing AgentGuard scanning
+ * on one repo while pointing the CLI installer at unscanned content elsewhere.
+ */
+function validateSkillUrl(githubUrl, skillUrl) {
+  if (!skillUrl) return null;
+
+  let skillParsed;
+  try {
+    skillParsed = new URL(skillUrl);
+  } catch {
+    throw new Error(`skill_url is not a valid URL: ${skillUrl}`);
+  }
+
+  const allowedHosts = new Set(['github.com', 'raw.githubusercontent.com']);
+  if (!allowedHosts.has(skillParsed.hostname)) {
+    throw new Error(
+      `skill_url must be on github.com or raw.githubusercontent.com (got: ${skillParsed.hostname})`
+    );
+  }
+
+  const { owner, repo } = parseOwnerRepo(githubUrl);
+  const skillPath = skillParsed.pathname.replace(/^\//, '');
+  if (!skillPath.startsWith(`${owner}/${repo}/`) && skillPath !== `${owner}/${repo}`) {
+    throw new Error(
+      `skill_url must point to the same repository (${owner}/${repo}) as github_url`
+    );
+  }
+
+  return skillUrl;
 }
 
 function githubHeaders() {
@@ -187,13 +225,11 @@ async function enrich(submissionFilePath) {
   }
 
   // 6. Merge enriched fields into the original submission file.
-  //    Fields marked "contributor-provided" are taken verbatim from the
-  //    submission and must not be overwritten with derived/API data.
   const enriched = {
-    // --- contributor-provided (pass through unchanged) ---
-    name:      name ?? skillId,
-    github_url: repoData.html_url,  // normalised to canonical GitHub URL
-    skill_url: skillUrl,            // contributor-supplied raw URL — not derived
+    // --- contributor-provided (pass through unchanged, except where noted) ---
+    name:       name ?? skillId,
+    github_url: repoData.html_url,  // contributor's repo, normalised to canonical GitHub URL
+    skill_url:  skillUrl,           // contributor-supplied raw URL — not derived or modified
     category,
     description,
     // --- enriched by this script ---
