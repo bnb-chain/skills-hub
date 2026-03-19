@@ -8,7 +8,10 @@ const SKILLS_DIR = path.join(__dirname, '..', 'skills');
 const INDEX_PATH = path.join(SKILLS_DIR, 'index.json');
 
 const files = fs.readdirSync(SKILLS_DIR)
-  .filter(f => f.endsWith('-metadata.json') && !f.startsWith('_'));
+  .filter(f => f.endsWith('-metadata.json') && !f.startsWith('_'))
+  .sort();
+
+let hasError = false;
 
 const skills = files.map(file => {
   const slug = file.replace('-metadata.json', '');
@@ -16,7 +19,8 @@ const skills = files.map(file => {
   try {
     raw = JSON.parse(fs.readFileSync(path.join(SKILLS_DIR, file), 'utf8'));
   } catch (err) {
-    console.error(`Skipping ${file}: ${err.message}`);
+    console.error(`Error: cannot parse ${file}: ${err.message}`);
+    hasError = true;
     return null;
   }
   return {
@@ -34,6 +38,11 @@ const skills = files.map(file => {
     evaluated_at:        raw.evaluated_at ?? null,
   };
 }).filter(Boolean);
+
+if (hasError) {
+  console.error('Aborting: one or more metadata files could not be parsed.');
+  process.exit(1);
+}
 
 const index = {
   generated_at: new Date().toISOString(),

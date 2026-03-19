@@ -28,6 +28,7 @@ function parseSubmission(filePath) {
     throw new Error(`Invalid JSON in ${filePath}: ${err.message}`);
   }
 
+  // Required fields
   const { name, github_url, category, description } = data;
 
   if (!github_url)  throw new Error('Missing required field: github_url');
@@ -37,7 +38,10 @@ function parseSubmission(filePath) {
     throw new Error('Field "category" must be a non-empty array of strings');
   }
 
-  return { name, githubUrl: github_url, category, description };
+  // Optional contributor-provided fields (passed through unchanged)
+  const skillUrl = data.skill_url ?? null;
+
+  return { name, githubUrl: github_url, skillUrl, category, description };
 }
 
 function githubHeaders() {
@@ -111,7 +115,7 @@ async function enrich(submissionFilePath) {
   console.log(`\n→ Enriching: ${skillId}`);
 
   // 1. Parse contributor-submitted JSON
-  const { name, githubUrl, category, description } = parseSubmission(absPath);
+  const { name, githubUrl, skillUrl, category, description } = parseSubmission(absPath);
 
   const { owner, repo } = parseOwnerRepo(githubUrl);
 
@@ -182,12 +186,17 @@ async function enrich(submissionFilePath) {
     console.warn('  ⚠ AGENTGUARD_API_KEY not set — skipping security scan');
   }
 
-  // 6. Merge enriched fields into the original submission file
+  // 6. Merge enriched fields into the original submission file.
+  //    Fields marked "contributor-provided" are taken verbatim from the
+  //    submission and must not be overwritten with derived/API data.
   const enriched = {
-    name: name ?? skillId,
-    github_url: repoData.html_url,
+    // --- contributor-provided (pass through unchanged) ---
+    name:      name ?? skillId,
+    github_url: repoData.html_url,  // normalised to canonical GitHub URL
+    skill_url: skillUrl,            // contributor-supplied raw URL — not derived
     category,
     description,
+    // --- enriched by this script ---
     owner: {
       username:     ownerData.login,
       display_name: ownerData.name ?? ownerData.login,

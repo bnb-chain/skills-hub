@@ -43,7 +43,11 @@ npx bnbskills add <slug>
 npx bnbskills add <slug> --global
 ```
 
-The skill is installed to `.claude/skills/<slug>.md` and can be invoked immediately as `/<slug>`.
+The skill is written to:
+- **Project-local** (default): `.claude/skills/<slug>.md` in the current working directory
+- **Global** (`--global`): `~/.claude/skills/<slug>.md`, available in all projects
+
+In both cases it can be invoked immediately as `/<slug>`.
 
 ## Other CLI commands
 
