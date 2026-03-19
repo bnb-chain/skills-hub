@@ -1,6 +1,6 @@
 # Skills Hub
 
-A community-curated registry of skills for the BNBChain ecosystem. Each skill is security-scanned by AgentGuard and instantly installable.
+A community-curated registry of skills for the BNBChain ecosystem. Each skill is security-scanned by AgentGuard. Skills with a `skill_url` are installable via the CLI; others link to their GitHub repository for manual installation.
 
 ---
 

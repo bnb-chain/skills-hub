@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-18T10:49:25.759Z",
+  "generated_at": "2026-03-19T00:10:16.718Z",
   "source": "https://github.com/bnb-chain/skills-hub",
   "skills": [
     {
@@ -11,7 +11,7 @@
         "blockchain"
       ],
       "github_url": "https://github.com/bnb-chain/bnbchain-skills",
-      "skill_url": null,
+      "skill_url": "https://raw.githubusercontent.com/bnb-chain/bnbchain-skills/main/skills/bnbchain-mcp-skill/SKILL.md",
       "owner": "bnb-chain",
       "risk_score": 0,
       "risk_level": "safe",
@@ -85,7 +85,7 @@
         "bnb-chain"
       ],
       "github_url": "https://github.com/bnb-chain/skills-hub",
-      "skill_url": null,
+      "skill_url": "https://raw.githubusercontent.com/bnb-chain/skills-hub/main/skills/skills-hub-skill.md",
       "owner": "bnb-chain",
       "risk_score": 0,
       "risk_level": "safe",

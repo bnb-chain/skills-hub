@@ -1,6 +1,7 @@
 {
   "name": "skills-hub",
   "github_url": "https://github.com/bnb-chain/skills-hub",
+  "skill_url": "https://raw.githubusercontent.com/bnb-chain/skills-hub/main/skills/skills-hub-skill.md",
   "category": [
     "skill-discovery",
     "registry",

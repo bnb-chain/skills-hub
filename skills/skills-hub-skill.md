@@ -66,7 +66,7 @@ npx bnbskills search <query>
 
 **"I want to trade on a prediction market"**
 1. Fetch index.json
-2. Filter: `category` contains `prediction-markets` or `trading`
+2. Filter: `category` contains `Prediction Markets` or `Myriad Markets`
 3. Find: `myriad-markets-skills` — check risk level before proceeding
 4. If acceptable: `npx bnbskills add myriad-markets-skills`
 
