@@ -51,10 +51,12 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             FILES=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" \
-              | grep 'skills/.*-metadata\.json' || true)
+              | grep 'skills/.*-metadata\.json' \
+              | grep -v 'skills/_' || true)
           else
             FILES=$(git diff --name-only HEAD~1 HEAD \
-              | grep 'skills/.*-metadata\.json' || true)
+              | grep 'skills/.*-metadata\.json' \
+              | grep -v 'skills/_' || true)
           fi
 
           if [ -z "$FILES" ]; then
@@ -84,10 +86,14 @@ jobs:
           done < /tmp/changed-skills.txt
 
       # -----------------------------------------------------------------------
-      # Same-repo PR: commit enriched files back to the PR branch.
+      # Same-repo PR: commit enriched metadata files back to the PR branch.
+      # skills/index.json is intentionally excluded here — it is a derived
+      # artifact that Scope Guard does not permit in contributor PRs. It will
+      # be regenerated and committed to main when the PR merges (see the
+      # "Commit enriched files to main" step below).
       # -----------------------------------------------------------------------
       - name: Commit enriched files to PR branch
-        if: steps.changed.outputs.any == 'true' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false
+        if: steps.changed.outputs.any == 'true' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false && !contains(github.event.pull_request.labels.*.name, 'maintainer-pr')
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -107,6 +113,14 @@ jobs:
           git push origin ${{ github.event.pull_request.head.ref }}
 
       # -----------------------------------------------------------------------
+      # Regenerate skills/index.json after enrichment.
+      # Runs on push to main only — not on PR branches (see above).
+      # -----------------------------------------------------------------------
+      - name: Generate skill index
+        if: steps.changed.outputs.any == 'true' && github.event_name == 'push'
+        run: node scripts/generate-index.js
+
+      # -----------------------------------------------------------------------
       # Fork PR merge / direct push: commit enriched files straight to main.
       # -----------------------------------------------------------------------
       - name: Commit enriched files to main
@@ -118,6 +132,7 @@ jobs:
           while IFS= read -r file; do
             git add "$file"
           done < /tmp/changed-skills.txt
+          git add skills/index.json
 
           git diff --staged --quiet && echo "No changes to commit" && exit 0
 
@@ -129,7 +144,7 @@ jobs:
       # Post enrichment results as a PR comment (PR events only).
       # -----------------------------------------------------------------------
       - name: Comment enrichment results on PR
-        if: steps.changed.outputs.any == 'true' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false
+        if: steps.changed.outputs.any == 'true' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false && !contains(github.event.pull_request.labels.*.name, 'maintainer-pr')
         uses: actions/github-script@v7
         with:
           script: |

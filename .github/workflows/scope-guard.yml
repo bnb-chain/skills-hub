@@ -11,6 +11,7 @@ on:
 jobs:
   check-scope:
     name: Check PR Scope
+    if: "!contains(github.event.pull_request.labels.*.name, 'maintainer-pr')"
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -31,6 +32,10 @@ jobs:
       #   scripts/         — enrichment script
       #   CONTRIBUTING.md  — contribution guide
       #   skills/_TEMPLATE-metadata.json — template file
+      #   skills/skills-hub-skill.md     — maintainer-owned skill definition
+      #   skills/index.json              — bot/maintainer-owned registry; contributor
+      #                                    edits would bypass enrichment and could
+      #                                    inject arbitrary fields into the CLI registry
       # -----------------------------------------------------------------------
       - name: Check for out-of-scope changes
         id: scope

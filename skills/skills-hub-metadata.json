@@ -1,0 +1,33 @@
+{
+  "name": "skills-hub",
+  "github_url": "https://github.com/bnb-chain/skills-hub",
+  "skill_url": "https://raw.githubusercontent.com/bnb-chain/skills-hub/main/skills/skills-hub-skill.md",
+  "category": [
+    "skill-discovery",
+    "registry",
+    "bnb-chain"
+  ],
+  "description": "The BNBChain Skills Hub meta-skill. Connects agents to the full ecosystem skill registry — discover, evaluate via AgentGuard security scores, and install skills with a single command. Start here to find any BNBChain capability.",
+  "owner": {
+    "username": "bnb-chain",
+    "display_name": "bnb-chain",
+    "type": "Organization",
+    "profile_url": "https://github.com/bnb-chain",
+    "avatar_url": "https://avatars.githubusercontent.com/u/45615063?v=4"
+  },
+  "repo": {
+    "stars": 3,
+    "default_branch": "main"
+  },
+  "latest_commit": "d5f7aa3bbf54ea45eca0620f84009e80fbbc5eec",
+  "agentguard_scan_id": "cefd116e-6c93-4010-9712-37956964456e",
+  "agentguard_report_url": "https://agentguard.gopluslabs.io/report/cefd116e-6c93-4010-9712-37956964456e",
+  "agentguard_result": {
+    "risk_score": 0,
+    "risk_level": "safe",
+    "verdict": "passed",
+    "summary": "No threats detected. Skill appears safe.",
+    "threats": []
+  },
+  "evaluated_at": "2026-03-18T10:49:25.728Z"
+}

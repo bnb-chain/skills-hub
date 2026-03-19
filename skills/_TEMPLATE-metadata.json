@@ -1,6 +1,7 @@
 {
   "name": "My Skill Name",
   "github_url": "https://github.com/owner/repo-containing-skills",
+  "skill_url": "https://raw.githubusercontent.com/owner/repo/main/SKILL.md",
   "category": ["category1", "category2"],
   "description": "One or two sentences describing what this skill does and when to use it."
 }
