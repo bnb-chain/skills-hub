@@ -148,7 +148,8 @@ async function enrich(submissionFilePath) {
     } else {
       console.log(`  Calling AgentGuard API`);
       try {
-        const agRes = await fetch('https://agentguard.gopluslabs.io/api/v1/scan', {
+        const agentguardUrl = process.env.AGENTGUARD_API_URL || 'https://agentguard.gopluslabs.io/api/v1/scan';
+        const agRes = await fetch(agentguardUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
