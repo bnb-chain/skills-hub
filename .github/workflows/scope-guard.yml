@@ -8,6 +8,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+# Restrict default permissions to read-only at the workflow level.
+permissions:
+  contents: read
+
 jobs:
   check-scope:
     name: Check PR Scope
