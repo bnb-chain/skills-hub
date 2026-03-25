@@ -33,6 +33,17 @@ function parseSubmission(filePath) {
   if (!github_url)  throw new Error('Missing required field: github_url');
   if (!category)    throw new Error('Missing required field: category');
   if (!description) throw new Error('Missing required field: description');
+
+  // Validate field types and lengths to prevent XSS payloads and oversized data
+  if (typeof description !== 'string' || description.length > 1000) {
+    throw new Error('description must be a string of at most 1000 characters');
+  }
+  if (name !== undefined && name !== null && (typeof name !== 'string' || name.length > 200)) {
+    throw new Error('name must be a string of at most 200 characters');
+  }
+  if (typeof github_url !== 'string' || github_url.length > 500) {
+    throw new Error('github_url must be a string of at most 500 characters');
+  }
   if (!Array.isArray(category) || category.length === 0) {
     throw new Error('Field "category" must be a non-empty array of strings');
   }
