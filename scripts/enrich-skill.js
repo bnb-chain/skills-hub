@@ -93,7 +93,15 @@ async function fetchRepoContent(owner, repo, defaultBranch) {
       const raw = await fetch(
         `https://raw.githubusercontent.com/${owner}/${repo}/${defaultBranch}/${f.path}`
       );
-      return raw.ok ? `### ${f.path}\n${await raw.text()}` : null;
+      if (!raw.ok) return null;
+      const contentLength = parseInt(raw.headers.get('content-length') || '0', 10);
+      if (contentLength > 1_000_000) {
+        console.warn(`  Skipping ${f.path}: file too large (${contentLength} bytes)`);
+        return null;
+      }
+      const text = await raw.text();
+      if (text.length > 1_000_000) return null; // Double-check actual size
+      return `### ${f.path}\n${text}`;
     })
   );
 
@@ -146,7 +154,13 @@ async function enrich(submissionFilePath) {
     if (!skillContent) {
       console.warn('  ⚠ No scannable content found in repo — skipping AgentGuard');
     } else {
-      console.log(`  Calling AgentGuard API`);
+      // Cap total content size to prevent oversized POST to third-party API
+      const MAX_CONTENT_SIZE = 500_000; // 500KB
+      const trimmedContent = skillContent.length > MAX_CONTENT_SIZE
+        ? skillContent.slice(0, MAX_CONTENT_SIZE)
+        : skillContent;
+
+      console.log(`  Calling AgentGuard API (content size: ${trimmedContent.length} bytes)`);
       try {
         const agRes = await fetch('https://agentguard.gopluslabs.io/api/v1/scan', {
           method: 'POST',
@@ -154,7 +168,7 @@ async function enrich(submissionFilePath) {
             'Content-Type': 'application/json',
             'X-API-Key': process.env.AGENTGUARD_API_KEY,
           },
-          body: JSON.stringify({ content: skillContent }),
+          body: JSON.stringify({ content: trimmedContent }),
         });
 
         if (agRes.ok) {
