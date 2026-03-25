@@ -160,14 +160,24 @@ async function enrich(submissionFilePath) {
         if (agRes.ok) {
           const agData = await agRes.json();
           const scan   = agData.data ?? {};
-          agentguardReportUrl = scan.reportUrl ?? null;
-          agentguardScanId    = scan.scanId    ?? null;
-          agentguardResult    = {
-            risk_score: scan.riskScore  ?? null,
-            risk_level: scan.riskLevel  ?? null,
-            verdict:    scan.verdict    ?? null,
-            summary:    scan.summary    ?? null,
-            threats:    scan.threats    ?? [],
+          // Validate AgentGuard response fields to prevent injection.
+          // If AgentGuard is compromised or returns unexpected data,
+          // unvalidated fields could inject content into PR comments
+          // (reportUrl rendered as markdown link) or downstream UIs.
+          const REPORT_URL_PATTERN = /^https:\/\/agentguard\.gopluslabs\.io\/report\/[a-f0-9-]+$/;
+          const rawUrl = scan.reportUrl ?? null;
+          agentguardReportUrl = rawUrl && REPORT_URL_PATTERN.test(rawUrl) ? rawUrl : null;
+          if (rawUrl && !agentguardReportUrl) {
+            console.warn(\`  WARNING: AgentGuard returned unexpected reportUrl format: \${rawUrl.slice(0, 100)}\`);
+          }
+
+          agentguardScanId = typeof scan.scanId === 'string' ? scan.scanId.slice(0, 100) : null;
+          agentguardResult = {
+            risk_score: typeof scan.riskScore === 'number' ? scan.riskScore : null,
+            risk_level: typeof scan.riskLevel === 'string' ? scan.riskLevel.slice(0, 20) : null,
+            verdict:    typeof scan.verdict === 'string' ? scan.verdict.slice(0, 20) : null,
+            summary:    typeof scan.summary === 'string' ? scan.summary.slice(0, 500) : null,
+            threats:    Array.isArray(scan.threats) ? scan.threats.slice(0, 50) : [],
           };
           console.log(`  AgentGuard report: ${agentguardReportUrl ?? 'no reportUrl in response'}`);
         } else {
