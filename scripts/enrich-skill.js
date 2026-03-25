@@ -60,7 +60,10 @@ async function githubGet(url) {
 }
 
 function parseOwnerRepo(githubUrl) {
-  const m = githubUrl.match(/github\.com\/([^/]+)\/([^/]+?)(?:\.git)?(?:\/.*)?$/);
+  // Use possessive-style matching to prevent catastrophic backtracking (ReDoS).
+  // The original lazy quantifier [^/]+? followed by optional groups (?:\.git)?(?:\/.*)?$
+  // can cause O(n^2) backtracking on crafted inputs like "/owner/" + "a".repeat(50000) + ".gi"
+  const m = githubUrl.match(/github\.com\/([^/]+)\/([^/.]+)(?:\.git)?(?:\/|$)/);
   if (!m) throw new Error(`Cannot parse owner/repo from URL: ${githubUrl}`);
   return { owner: m[1], repo: m[2] };
 }
