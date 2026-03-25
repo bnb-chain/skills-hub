@@ -146,7 +146,26 @@ async function enrich(submissionFilePath) {
     if (!skillContent) {
       console.warn('  ⚠ No scannable content found in repo — skipping AgentGuard');
     } else {
-      console.log(`  Calling AgentGuard API`);
+      // Rate limit protection: check if we've already scanned this repo recently.
+      // Without this, an attacker can open hundreds of PRs to exhaust the
+      // AgentGuard API quota (Free: 100/month, Pro: 5000/month), blocking
+      // legitimate security scans for the entire billing period.
+      // Currently observed: single user opened 27 PRs in 4 minutes.
+      const scanLockFile = path.join(require('os').tmpdir(), \`agentguard-scan-\${owner}-\${repo}.lock\`);
+      try {
+        const lockStat = fs.statSync(scanLockFile);
+        const lockAgeMs = Date.now() - lockStat.mtimeMs;
+        if (lockAgeMs < 300000) { // 5 minute cooldown per repo
+          console.warn('  Skipping AgentGuard scan: same repo scanned within last 5 minutes');
+          skillContent = null; // Skip scan
+        }
+      } catch { /* lock file doesn't exist, proceed */ }
+
+      if (skillContent) {
+        fs.writeFileSync(scanLockFile, new Date().toISOString());
+      }
+
+      console.log(\`  Calling AgentGuard API\`);
       try {
         const agRes = await fetch('https://agentguard.gopluslabs.io/api/v1/scan', {
           method: 'POST',
