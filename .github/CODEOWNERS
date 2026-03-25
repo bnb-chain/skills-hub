@@ -1,0 +1,10 @@
+# Require maintainer review for all workflow and script changes.
+# This ensures that security-sensitive files cannot be merged without
+# explicit approval from a trusted maintainer.
+/.github/            @bnb-chain/skills-hub-maintainers
+/scripts/            @bnb-chain/skills-hub-maintainers
+/CONTRIBUTING.md     @bnb-chain/skills-hub-maintainers
+/skills/_TEMPLATE-metadata.json @bnb-chain/skills-hub-maintainers
+
+# Skill submissions can be reviewed by any contributor
+/skills/*-metadata.json
