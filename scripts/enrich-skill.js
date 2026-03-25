@@ -199,6 +199,10 @@ async function enrich(submissionFilePath) {
       stars:          repoData.stargazers_count,
       default_branch: repoData.default_branch,
     },
+    license:               repoData.license ? {
+      key:  repoData.license.spdx_id,
+      name: repoData.license.name,
+    } : null,
     latest_commit:         latestCommit,
     agentguard_scan_id:    agentguardScanId,
     agentguard_report_url: agentguardReportUrl,
